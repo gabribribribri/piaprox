@@ -8,9 +8,10 @@ How to use:
     <back_end> <iterations> <jobs>
 
     <back_end> choose between:
-        - rust_decimal
-        - rug
-        - bigdecimal
+        - f64 - Fastest but not precise
+        - rust_decimal - Precise and fast
+        - rug - STILL IN DEV
+        - bigdecimal - Very precise and very slow
     "
     );
     std::process::exit(exit_code);
