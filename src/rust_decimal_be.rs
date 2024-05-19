@@ -16,10 +16,6 @@ pub fn run(max: u64, jobs: u64) {
             let mut n = Decimal::new(offset as i64, 0);
 
             while n < dmax {
-                // if n.clone() % dec!(1_000_000) == Decimal::ZERO {
-                //     println!("[THREAD {}]: {}th iteration", offset, n)
-                // }
-
                 sum_iters += (dec!(4) - (n % dec!(2)) * dec!(8)) / (dec!(2) * n + dec!(1));
                 n += djobs;
             }

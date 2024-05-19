@@ -8,28 +8,17 @@ pub fn run(iterations: u64, jobs: u64) {
 
     let mut job_handles = Vec::new();
     for offset in 1..=jobs {
-        let iterations_d = BigDecimal::from(iterations as u64);
-        let djobs = BigDecimal::from(jobs as u64);
-
         job_handles.push(thread::spawn(move || {
             let mut sum_iters = BigDecimal::zero();
-            let mut n = BigDecimal::from(offset as u64);
+            let mut n = offset;
 
-            while n < iterations_d {
-                // if n.clone() % BigDecimal::from(1_000_000) == BigDecimal::zero() {
-                //     println!("[THREAD {}]: {}th iteration", offset, n)
-                // }
-
-                sum_iters += (BigDecimal::from(4)
-                    - (n.clone() % BigDecimal::from(2)) * BigDecimal::from(8))
-                    / (BigDecimal::from(2) * n.clone() + BigDecimal::from(1));
-
-                n += djobs.clone();
+            while n < iterations {
+                sum_iters += BigDecimal::from(4 - (n as i64 % 2) * 8) / BigDecimal::from(2 * n + 1);
+                n += jobs;
             }
             sum_iters
         }))
     }
-
     let piaprox = job_handles
         .into_iter()
         .map(|j| j.join().unwrap())
