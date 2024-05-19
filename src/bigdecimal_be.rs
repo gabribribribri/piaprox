@@ -20,8 +20,8 @@ pub fn run(max: usize, jobs: usize) {
                 //     println!("[THREAD {}]: {}th iteration", offset, n)
                 // }
 
-                sum_iters += (BigDecimal::from(1)
-                    - (n.clone() % BigDecimal::from(2)) * BigDecimal::from(2))
+                sum_iters += (BigDecimal::from(4)
+                    - (n.clone() % BigDecimal::from(2)) * BigDecimal::from(8))
                     / (BigDecimal::from(2) * n.clone() + BigDecimal::from(1));
 
                 n += djobs.clone();
@@ -30,13 +30,12 @@ pub fn run(max: usize, jobs: usize) {
         }))
     }
 
-    let piaprox = (job_handles
+    let piaprox = job_handles
         .into_iter()
         .map(|j| j.join().unwrap())
         .sum::<BigDecimal>()
-        + BigDecimal::from(1))
-        * BigDecimal::from(4);
+        + BigDecimal::from(4);
 
     let time = timer.elapsed();
-    utils::result_message("rust_decimal", max, jobs, time, piaprox);
+    utils::result_message("bigdecimal", max, jobs, time, piaprox);
 }

@@ -20,20 +20,18 @@ pub fn run(max: usize, jobs: usize) {
                 //     println!("[THREAD {}]: {}th iteration", offset, n)
                 // }
 
-                sum_iters += (Decimal::ONE - (n % Decimal::TWO) * Decimal::TWO)
-                    / (Decimal::TWO * n + Decimal::ONE);
+                sum_iters += (dec!(4) - (n % dec!(2)) * dec!(8)) / (dec!(2) * n + dec!(1));
                 n += djobs;
             }
             return sum_iters;
         }))
     }
 
-    let piaprox = (job_handles
+    let piaprox = job_handles
         .into_iter()
         .map(|j| j.join().unwrap())
         .sum::<Decimal>()
-        + Decimal::ONE)
-        * dec!(4);
+        + dec!(4);
 
     let time = timer.elapsed();
     utils::result_message("rust_decimal", max, jobs, time, piaprox);

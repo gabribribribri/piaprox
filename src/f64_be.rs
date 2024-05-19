@@ -18,19 +18,18 @@ pub fn run(max: usize, jobs: usize) {
                 //     println!("[THREAD {}]: {}th iteration", offset, n);
                 // }
 
-                sum_iters += (1f64 - (n % 2f64) * 2f64) / (2f64 * n + 1f64);
+                sum_iters += (4f64 - (n % 2f64) * 8f64) / (2f64 * n + 1f64);
                 n += fjobs;
             }
             sum_iters
         }))
     }
 
-    let piaprox = (job_handles
+    let piaprox = job_handles
         .into_iter()
         .map(|j| j.join().unwrap())
         .sum::<f64>()
-        + 1f64)
-        * 4f64;
+        + 4f64;
 
     let time = timer.elapsed();
     utils::result_message("f64", max, jobs, time, piaprox);
