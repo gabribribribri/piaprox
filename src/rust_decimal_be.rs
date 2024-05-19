@@ -4,7 +4,7 @@ use std::{thread, time::Instant};
 
 use crate::utils;
 
-pub fn run(max: u32, jobs: u32) {
+pub fn run(max: u64, jobs: u64) {
     let timer = Instant::now();
     let djobs = Decimal::new(jobs as i64, 0);
     let dmax = Decimal::new(max as i64, 0);

@@ -2,7 +2,7 @@ use std::{thread, time::Instant};
 
 use crate::utils;
 
-pub fn run(iterations: u32, jobs: u32) {
+pub fn run(iterations: u64, jobs: u64) {
     let timer = Instant::now();
     let jobs_f64 = jobs as f64;
     let iterations_f64 = iterations as f64;

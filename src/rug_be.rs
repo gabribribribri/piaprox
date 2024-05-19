@@ -7,7 +7,7 @@ use rug::{
 
 use crate::utils;
 
-pub fn run(iterations: u32, jobs: u32, precision: u32) {
+pub fn run(iterations: u64, jobs: u64, precision: u32) {
     println!("Precision: {}", precision);
     let timer = Instant::now();
 

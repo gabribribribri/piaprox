@@ -3,7 +3,7 @@ use std::{thread, time::Instant};
 
 use crate::utils;
 
-pub fn run(iterations: u32, jobs: u32) {
+pub fn run(iterations: u64, jobs: u64) {
     let timer = Instant::now();
 
     let mut job_handles = Vec::new();

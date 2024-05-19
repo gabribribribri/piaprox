@@ -14,10 +14,10 @@ struct Args {
     back_end: String,
 
     #[arg(short, long, default_value_t = 1_000_000)]
-    iterations: u32,
+    iterations: u64,
 
     #[arg(short, long, default_value_t = 1)]
-    jobs: u32,
+    jobs: u64,
 
     #[arg(short, long, default_value_t = 128)]
     precision: u32,
