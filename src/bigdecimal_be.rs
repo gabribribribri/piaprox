@@ -16,9 +16,9 @@ pub fn run(max: usize, jobs: usize) {
             let mut n = BigDecimal::from(offset as u64);
 
             while n < dmax {
-                if n.clone() % BigDecimal::from(1_000_000) == BigDecimal::zero() {
-                    println!("[THREAD {}]: {}th iteration", offset, n)
-                }
+                // if n.clone() % BigDecimal::from(1_000_000) == BigDecimal::zero() {
+                //     println!("[THREAD {}]: {}th iteration", offset, n)
+                // }
 
                 sum_iters += (BigDecimal::from(1)
                     - (n.clone() % BigDecimal::from(2)) * BigDecimal::from(2))

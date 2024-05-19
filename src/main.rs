@@ -1,5 +1,6 @@
 //be means backend
 mod bigdecimal_be;
+mod f64_be;
 mod rust_decimal_be;
 mod utils;
 
@@ -11,6 +12,7 @@ fn main() {
     match back_end.as_str() {
         "rust_decimal" => rust_decimal_be::run(max, jobs),
         "bigdecimal" => bigdecimal_be::run(max, jobs),
+        "f64" => f64_be::run(max, jobs),
         _ => utils::print_help_and_exit(0),
     }
 }
