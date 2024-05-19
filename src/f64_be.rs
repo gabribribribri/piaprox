@@ -2,10 +2,10 @@ use std::{thread, time::Instant};
 
 use crate::utils;
 
-pub fn run(max: usize, jobs: usize) {
+pub fn run(iterations: u32, jobs: u32) {
     let timer = Instant::now();
-    let fjobs = jobs as f64;
-    let fmax = max as f64;
+    let jobs_f64 = jobs as f64;
+    let iterations_f64 = iterations as f64;
 
     let mut job_handles = Vec::new();
     for offset in 1..=jobs {
@@ -13,13 +13,13 @@ pub fn run(max: usize, jobs: usize) {
             let mut sum_iters = 0f64;
             let mut n = offset as f64;
 
-            while n < fmax {
+            while n < iterations_f64 {
                 // if n % 1_000_000 == 0 {
                 //     println!("[THREAD {}]: {}th iteration", offset, n);
                 // }
 
                 sum_iters += (4f64 - (n % 2f64) * 8f64) / (2f64 * n + 1f64);
-                n += fjobs;
+                n += jobs_f64;
             }
             sum_iters
         }))
@@ -32,5 +32,5 @@ pub fn run(max: usize, jobs: usize) {
         + 4f64;
 
     let time = timer.elapsed();
-    utils::result_message("f64", max, jobs, time, piaprox);
+    utils::result_message("f64", iterations, jobs, time, piaprox);
 }

@@ -3,19 +3,19 @@ use std::{thread, time::Instant};
 
 use crate::utils;
 
-pub fn run(max: usize, jobs: usize) {
+pub fn run(iterations: u32, jobs: u32) {
     let timer = Instant::now();
 
     let mut job_handles = Vec::new();
     for offset in 1..=jobs {
-        let dmax = BigDecimal::from(max as u64);
+        let iterations_d = BigDecimal::from(iterations as u64);
         let djobs = BigDecimal::from(jobs as u64);
 
         job_handles.push(thread::spawn(move || {
             let mut sum_iters = BigDecimal::zero();
             let mut n = BigDecimal::from(offset as u64);
 
-            while n < dmax {
+            while n < iterations_d {
                 // if n.clone() % BigDecimal::from(1_000_000) == BigDecimal::zero() {
                 //     println!("[THREAD {}]: {}th iteration", offset, n)
                 // }
@@ -37,5 +37,5 @@ pub fn run(max: usize, jobs: usize) {
         + BigDecimal::from(4);
 
     let time = timer.elapsed();
-    utils::result_message("bigdecimal", max, jobs, time, piaprox);
+    utils::result_message("bigdecimal", iterations, jobs, time, piaprox);
 }

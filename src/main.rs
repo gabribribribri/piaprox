@@ -8,16 +8,19 @@ mod utils;
 use clap::Parser;
 
 #[derive(Parser, Debug)]
-#[command(about, long_about = None)]
+#[command(version, about, long_about = None)]
 struct Args {
-    #[arg(short, long, help = "The backend library that will be used", value_parser = ["rust_decimal", "bigdecimal", "rug", "f64"])]
+    #[arg(required = true, short, long, help = "The backend library that will be used", value_parser = ["rust_decimal", "bigdecimal", "rug", "f64"])]
     back_end: String,
 
     #[arg(short, long, default_value_t = 1_000_000)]
-    iterations: usize,
+    iterations: u32,
 
     #[arg(short, long, default_value_t = 1)]
-    jobs: usize,
+    jobs: u32,
+
+    #[arg(short, long, default_value_t = 128)]
+    precision: u32,
 }
 
 fn main() {
@@ -27,14 +30,7 @@ fn main() {
         "rust_decimal" => rust_decimal_be::run(args.iterations, args.jobs),
         "bigdecimal" => bigdecimal_be::run(args.iterations, args.jobs),
         "f64" => f64_be::run(args.iterations, args.jobs),
-        "rug" => rug_be::run(args.iterations, args.jobs),
+        "rug" => rug_be::run(args.iterations, args.jobs, args.precision),
         _ => (),
     }
-
-    // match back_end.as_str() {
-    //     "rust_decimal" => rust_decimal_be::run(max, jobs),
-    //     "bigdecimal" => bigdecimal_be::run(max, jobs),
-    //     "f64" => f64_be::run(max, jobs),
-    //     _ => utils::print_help_and_exit(0),
-    // }
 }
