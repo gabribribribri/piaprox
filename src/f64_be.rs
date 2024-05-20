@@ -14,10 +14,6 @@ pub fn run(iterations: u64, jobs: u64) {
             let mut n = offset as f64;
 
             while n < iterations_f64 {
-                // if n % 1_000_000 == 0 {
-                //     println!("[THREAD {}]: {}th iteration", offset, n);
-                // }
-
                 sum_iters += (4f64 - (n % 2f64) * 8f64) / (2f64 * n + 1f64);
                 n += jobs_f64;
             }

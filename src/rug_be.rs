@@ -1,7 +1,7 @@
 use std::{thread, time::Instant};
 
 use rug::{
-    ops::{AddFrom, DivFrom, MulFrom},
+    ops::{AddFrom, DivFrom},
     Float,
 };
 
@@ -12,21 +12,14 @@ pub fn run(iterations: u64, jobs: u64, precision: u32) {
     let timer = Instant::now();
 
     let mut job_handles = Vec::new();
-    for offset_u32 in 1..=jobs {
+    for offset in 1..=jobs {
         job_handles.push(thread::spawn(move || {
             let mut sum_iters = Float::with_val(precision, 0);
-            let mut n = offset_u32;
+            let mut n = offset;
             while n < iterations {
-                let up = if n % 2 == 0 {
-                    Float::with_val(precision, 4)
-                } else {
-                    Float::with_val(precision, -4)
-                };
-                let mut down = Float::with_val(precision, n);
-                down.mul_from(2);
-                down.add_from(1);
-                down.div_from(up);
-                sum_iters.add_from(down);
+                let mut iter = Float::with_val(precision, 2 * n + 1);
+                iter.div_from(4 - (n as i64 % 2) * 8);
+                sum_iters.add_from(iter);
                 n += jobs;
             }
             sum_iters

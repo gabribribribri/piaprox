@@ -19,7 +19,12 @@ struct Args {
     #[arg(short, long, default_value_t = 1)]
     jobs: u64,
 
-    #[arg(short, long, default_value_t = 128)]
+    #[arg(
+        short,
+        long,
+        default_value_t = 128,
+        help = "Only useful with 'rug' backend"
+    )]
     precision: u32,
 }
 
