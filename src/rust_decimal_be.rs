@@ -6,18 +6,16 @@ use crate::utils;
 
 pub fn run(max: u64, jobs: u64) {
     let timer = Instant::now();
-    let djobs = Decimal::new(jobs as i64, 0);
-    let dmax = Decimal::new(max as i64, 0);
 
     let mut job_handles = Vec::new();
     for offset in 1..=jobs {
         job_handles.push(thread::spawn(move || {
             let mut sum_iters = Decimal::ZERO;
-            let mut n = Decimal::new(offset as i64, 0);
+            let mut n = offset;
 
-            while n < dmax {
-                sum_iters += (dec!(4) - (n % dec!(2)) * dec!(8)) / (dec!(2) * n + dec!(1));
-                n += djobs;
+            while n < max {
+                sum_iters += Decimal::from(4 - (n as i64 % 2) * 8) / Decimal::from(2 * n + 1);
+                n += jobs;
             }
             return sum_iters;
         }))
