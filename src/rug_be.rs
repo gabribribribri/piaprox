@@ -8,7 +8,6 @@ use rug::{
 use crate::utils;
 
 pub fn run(iterations: u64, jobs: u64, precision: u32) {
-    println!("Precision: {}", precision);
     let timer = Instant::now();
 
     let mut job_handles = Vec::new();
@@ -33,5 +32,13 @@ pub fn run(iterations: u64, jobs: u64, precision: u32) {
     }
 
     let time = timer.elapsed();
-    utils::result_message("rug", iterations, jobs, time, piaprox);
+    // utils::result_message("rug", iterations, jobs, time, piaprox);
+    utils::result_message(
+        "rug",
+        piaprox,
+        Some(iterations),
+        Some(jobs),
+        Some(time),
+        Some(precision),
+    )
 }

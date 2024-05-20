@@ -26,5 +26,12 @@ pub fn run(iterations: u64, jobs: u64) {
         + BigDecimal::from(4);
 
     let time = timer.elapsed();
-    utils::result_message("bigdecimal", iterations, jobs, time, piaprox);
+    utils::result_message(
+        "bigdecimal",
+        piaprox,
+        Some(iterations),
+        Some(jobs),
+        Some(time),
+        None,
+    )
 }

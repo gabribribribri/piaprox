@@ -28,5 +28,12 @@ pub fn run(iterations: u64, jobs: u64) {
         + 4f64;
 
     let time = timer.elapsed();
-    utils::result_message("f64", iterations, jobs, time, piaprox);
+    utils::result_message(
+        "f64",
+        piaprox,
+        Some(iterations),
+        Some(jobs),
+        Some(time),
+        None,
+    )
 }

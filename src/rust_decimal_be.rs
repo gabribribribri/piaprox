@@ -28,5 +28,12 @@ pub fn run(max: u64, jobs: u64) {
         + dec!(4);
 
     let time = timer.elapsed();
-    utils::result_message("rust_decimal", max, jobs, time, piaprox);
+    utils::result_message(
+        "rust_decimal",
+        piaprox,
+        Some(max),
+        Some(jobs),
+        Some(time),
+        None,
+    );
 }
