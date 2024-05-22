@@ -1,17 +1,23 @@
 //be means backend
+mod aprox;
 mod bigdecimal_be;
 mod f64_be;
 mod rug_be;
 mod rust_decimal_be;
-mod utils;
 
+use std::time::Duration;
+
+use aprox::{Aprox, Backend, Strategy};
 use clap::Parser;
 
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Args {
     #[arg(required = true, short, long, help = "The backend library that will be used", value_parser = ["rust_decimal", "bigdecimal", "rug", "f64"])]
-    back_end: String,
+    backend: String,
+
+    #[arg(short, long, default_value_t = String::from("gregoryleibniz"), help = "The Strategy used to approximate pi", value_parser = ["gregory" , "gregoryleibniz" , "gl" , "g", "nilakantha" , "nk" , "n"])]
+    strategy: String,
 
     #[arg(short, long, default_value_t = 1_000_000)]
     iterations: u64,
@@ -31,11 +37,15 @@ struct Args {
 fn main() {
     let args = Args::parse();
 
-    match args.back_end.as_str() {
-        "rust_decimal" => rust_decimal_be::run(args.iterations, args.jobs),
-        "bigdecimal" => bigdecimal_be::run(args.iterations, args.jobs),
-        "f64" => f64_be::run(args.iterations, args.jobs),
-        "rug" => rug_be::run(args.iterations, args.jobs, args.precision),
-        _ => (),
-    }
+    let mut aprox = Aprox {
+        backend: Backend::from(args.backend),
+        strategy: Strategy::from(args.strategy),
+        iterations: args.iterations,
+        jobs: args.jobs,
+        time: Duration::ZERO,
+        precision: args.precision,
+    };
+
+    aprox.run();
+    aprox.result_message();
 }
