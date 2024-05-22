@@ -31,16 +31,6 @@ impl From<String> for Strategy {
         }
     }
 }
-// impl ToString for Backend {
-//     fn to_string(&self) -> String {
-//         String::from(match self {
-//             Self::RustDecimal(_) => "rust_decimal",
-//             Self::BigDecimal(_) => "bigdecimal",
-//             Self::F64(_) => "f64",
-//             Self::Rug(_) => "rug",
-//         })
-//     }
-// }
 
 impl Backend {
     fn to_string_backend(&self) -> String {
@@ -84,34 +74,6 @@ pub struct Aprox {
 }
 
 impl Aprox {
-    // pub fn new(backend: Backend, strategy: Strategy, iter) -> Self {
-    //     Self {
-    //         backend,
-    //         strategy,
-    //         iterations: None,
-    //         jobs: None,
-    //         time: None,
-    //         precision: None,
-    //     }
-    // }
-
-    // pub fn set_iterations(mut self, iterations: u64) -> Self {
-    //     self.iterations = Some(iterations);
-    //     self
-    // }
-    // pub fn set_jobs(mut self, jobs: u64) -> Self {
-    //     self.jobs = Some(jobs);
-    //     self
-    // }
-    // pub fn set_time(mut self, time: Duration) -> Self {
-    //     self.time = Some(time);
-    //     self
-    // }
-    // pub fn set_precision(mut self, precision: u32) -> Self {
-    //     self.precision = Some(precision);
-    //     self
-    // }
-
     //TODO Maybe implement a cool macro for this ?
     pub fn run(&mut self) {
         match self.strategy {
