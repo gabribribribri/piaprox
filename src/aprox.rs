@@ -1,5 +1,5 @@
 use colored::Colorize;
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
 use crate::{
     bigdecimal_be::BigDecimalBackend, f64_be::F64Backend, rug_be::RugBackend,
@@ -20,6 +20,15 @@ pub enum Backend {
 pub enum Strategy {
     GregoryLeibniz,
     Nilakantha,
+}
+
+impl ToString for Strategy {
+    fn to_string(&self) -> String {
+        String::from(match self {
+            Self::GregoryLeibniz => "Gregory-Leibniz",
+            Self::Nilakantha => "Nilakantha",
+        })
+    }
 }
 
 impl From<String> for Strategy {
@@ -76,6 +85,7 @@ pub struct Aprox {
 impl Aprox {
     //TODO Maybe implement a cool macro for this ?
     pub fn run(&mut self) {
+        let timer = Instant::now();
         match self.strategy {
             Strategy::GregoryLeibniz => match self.backend {
                 Backend::RustDecimal(_) => RustDecimalBackend::gl_run(self),
@@ -90,13 +100,16 @@ impl Aprox {
                 Backend::Rug(_) => RugBackend::nk_run(self),
             },
         }
+        self.time = timer.elapsed();
     }
 
     pub fn result_message(&self) {
         println!(
-            "\n\n{}{}{}\n",
-            "RESULTS FOR STRATEGY '".underline(),
+            "\n\n{}{}{}{}{}\n",
+            "Results for '".underline(),
             self.backend.to_string_backend().bold().underline().cyan(),
+            "' with strategy '".underline(),
+            self.strategy.to_string().bold().underline().cyan(),
             "' :".underline()
         );
         println!(

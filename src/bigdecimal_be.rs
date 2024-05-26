@@ -1,5 +1,5 @@
 use bigdecimal::{BigDecimal, Zero};
-use std::{thread, time::Instant};
+use std::thread;
 
 use crate::aprox::{Aprox, Backend};
 
@@ -10,21 +10,17 @@ pub trait BigDecimalBackend {
 
 impl BigDecimalBackend for Aprox {
     fn gl_run(&mut self) {
-        let timer = Instant::now();
-
         let iterations = self.iterations;
         let jobs = self.jobs;
 
         let mut job_handles = Vec::new();
-        for offset in 1..=self.jobs {
+        for offset in 1..=jobs {
             job_handles.push(thread::spawn(move || {
                 let mut sum_iters = BigDecimal::zero();
-                let mut n = offset;
 
-                while n < iterations {
+                for n in (offset..iterations).step_by(jobs as usize) {
                     sum_iters +=
                         BigDecimal::from(4 - (n as i64 % 2) * 8) / BigDecimal::from(2 * n + 1);
-                    n += jobs;
                 }
                 sum_iters
             }))
@@ -36,10 +32,30 @@ impl BigDecimalBackend for Aprox {
             + BigDecimal::from(4);
 
         self.backend = Backend::BigDecimal(Some(piaprox));
-        self.time = timer.elapsed();
     }
 
     fn nk_run(&mut self) {
-        todo!()
+        let iterations = self.iterations;
+        let jobs = self.jobs;
+
+        let mut job_handles = Vec::new();
+        for offset in 1..=jobs {
+            job_handles.push(thread::spawn(move || {
+                let mut sum_iters = BigDecimal::zero();
+
+                for n in (offset..iterations).step_by(jobs as usize) {
+                    sum_iters += BigDecimal::from(4 - ((n as i64 + 1) % 2) * 8)
+                        / BigDecimal::from((2 * n) * (2 * n + 1) * (2 * n + 2));
+                }
+                sum_iters
+            }))
+        }
+        let piaprox = job_handles
+            .into_iter()
+            .map(|j| j.join().unwrap())
+            .sum::<BigDecimal>()
+            + BigDecimal::from(3);
+
+        self.backend = Backend::BigDecimal(Some(piaprox));
     }
 }
